@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            
+        {% endblock %}
+        | Proyecto Django
+    </title>
+
+    {%load static%}
+    <link rel="stylesheet" type="text/css" href="{%static 'css/style.css'%}">
+</head>
+<body>
+    <header>
+        <div class="logotipo">
+            <img src="{%static 'images/logo.png'%}" alt="">
+            <h1>Proyecto con Django</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'inicio' %}">Inicio</a>
+            </li>
+            {% if user.email %}
+                <li>
+                    <a href="{% url 'list_articles' %}">Categorías</a>
+                    <ul>
+                        {% for category in categories  %}
+                            <li>
+                                <a href="{% url 'category' category.0 %}">{{ category.1 }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                {% for page in pages%}
+                    <li>
+                        <a href="{% url 'page' page.2 %}">{{page.1}}</a>
+                    </li>
+                {% endfor %}
+                
+                <li>
+                    <a href="{% url 'logout' %}">Cerrar Sesion</a>
+                </li>
+            {% else %}
+            <li>
+                <a href="{% url 'register' %}">Registro</a>
+            </li>
+
+            <li>    
+                <a href="{% url 'login' %}">Identificate</a>
+            </li>
+            
+            {% endif %}
+            
+        </ul>
+    </nav>
+
+    <div class="contenido">
+        <div class="box">
+            {% block content  %}
+        
+            {% endblock  %}
+        </div>
+    </div>
+
+    <footer>
+        Proyecto Con Django &copy; Heriberto Lazo Reyes -  {% now "d/m/y" %}
+    </footer>
+</body>
+</html>
